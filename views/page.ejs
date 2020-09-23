@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Debbuging</title>
+</head>
+<body>
+	<h4>Welcome : <%=member%></h4>
+	<a href="/logout"><button >logout</button></a> 
+<h1>Demo: Get Started Debugging Javascript with Chrom DevToos</h1>
+<label for=number1>Number 1</label>
+<input type="text" name="input1" placeholder="<%=number%>"><br>
+<label for=number2>Number 1</label>
+<input type="text" name="input2" placeholder="<%=number%>"><br>
+<button onclick="add()">Add number 1 and Number 2</button>
+<div id="result"></div>
+
+
+
+<script>
+	function add(){
+		var  input= document.querySelectorAll('input');
+		var sum = input[0].value + input[1].value;
+
+		var result = document.getElementById('result');
+		result.innerHTML = sum;
+	}
+</script>
+</body>
+</html>
