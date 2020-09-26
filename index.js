@@ -7,6 +7,8 @@ const bcrypt = require('bcrypt') //module to harsh password
 
 
 
+
+
 var session;
 const app = express()
 
@@ -25,6 +27,9 @@ cookie: {
 }
 }));
 app.use(router)
+
+
+
 
 
 

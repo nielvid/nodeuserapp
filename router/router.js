@@ -42,40 +42,10 @@ router.post('/form', function(req, res){
 	
 		// session = req.session.id
 		 
-
-		
-
-		const hashedPassword = bcrypt.hash(req.body.password, 10)
-	.then((response)=>{
-		return user = {
-			id: Date.now().toString(),
-			name: req.body.username,
-			email :req.body.email,
-			password : response
-		}
-			
-	
-	})
-	.then((user)=>{ 
-		
-		
-		   
-		   person = user.name
-		  personPw = user.password
-
-		   list.push(user)
-		   console.log(list)
-		}
-		
-)
-
-	.catch(err=>console.log(err));
-	
-
-
 	res.render('index')
+
 }
-	
+
 })
 		
 
@@ -115,7 +85,7 @@ router.post('/signin', (req, res)=>{
 				if(value === true){
 					session.id = req.body.username
 		console.log(session.id)
-		res.render('page', {member: currentUser.username, number :'Enter a numer'})
+		res.redirect('https://www.nielvid.com')
 				}
 				else{
 					res.render('index')
