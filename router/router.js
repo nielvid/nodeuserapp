@@ -6,10 +6,9 @@ const sessions = require("express-session");
 
 var session;
 
-var list = [];
-var person;
-var personPw;
+var loggers = [];
 
+var newUser;
 
 
 //registeration page
@@ -24,18 +23,18 @@ router.post('/form', function(req, res){
 	if (req.body.username =="" || req.body.password == ""){
 		res.status(404).render('signups')
 	}else{
-		 person = req.body.username;
-		 email = req.body.email;
-		 personPw = req.body.password
+
+		newUser = {
+			username: req.body.username,
+			email: req.body.email,
+			password: req.body.password
+		}
+		
 		// session = req.session.id
 		 
-	newUser = {
-		username: person,
-		email: email,
-		password: personPw
-	}
-		list.push(newUser)
-		 console.log(list)
+
+		loggers.push(newUser)
+		 console.log(loggers)
 
 		 res.render('index')
 }
@@ -58,18 +57,21 @@ router.post('/signin', (req, res)=>{
 	if (req.body.username =="" || req.body.password == ""){
 		res.status(404).render('index')
 	}
-	else if(req.body.username == person && req.body.password ==personPw){
+	let currentUser = loggers.find(function(user){ return user.username == req.body.username})
+
+	
+		if(currentUser.username == req.body.username && currentUser.password == req.body.password){
 		session.id = req.body.username
 		console.log(session.id)
-		res.render('page', {member: person, number :'Enter a numer'})
-	}else{
-		res.redirect('/')
-	}
+		res.render('page', {member: currentUser.username, number :'Enter a numer'})
 
-	})
+	}else{
+		res.render('index')
+	}
+})
 
 //Page after succesfull login
-router.get('/home', (req, res)=>{
+router.get('/test', (req, res)=>{
 	session = req.session
 	if(!session.id){
 		res.redirect('/login')
