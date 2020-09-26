@@ -5,6 +5,8 @@ const router = require('./router/router')
 const bodyParser = require( 'body-parser')
 const bcrypt = require('bcrypt') //module to harsh password
 
+
+
 var session;
 const app = express()
 
