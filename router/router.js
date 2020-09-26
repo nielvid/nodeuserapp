@@ -7,11 +7,9 @@ const sessions = require("express-session");
 
 var session;
 
-var list = [];
-var person;
-var email;
-var personPw;
+var loggers = [];
 
+var newUser;
 
 
 
@@ -27,6 +25,25 @@ router.post('/form', function(req, res){
 	if (req.body.username =="" || req.body.password == ""){
 		res.status(404).render('signups')
 	}else{
+		bcrypt.hash(req.body.password, 10)
+		.then(function(response){
+			newUser = {
+				username: req.body.username,
+				email: req.body.email,
+				password: response
+			}
+			
+
+		}).then(function(data){
+
+			loggers.push(newUser)
+		 console.log(loggers)
+		}).catch(err => console.log(err))
+	
+		// session = req.session.id
+		 
+
+		
 
 		const hashedPassword = bcrypt.hash(req.body.password, 10)
 	.then((response)=>{
@@ -84,22 +101,32 @@ router.post('/signin', (req, res)=>{
 	if (req.body.username =="" || req.body.password == ""){
 		res.status(404).render('index')
 	}
-	
-	
-	bcrypt.compare(req.body.password, personPw)
-	.then((value)=>{
-		
+	var currentUser = loggers.find(function(user){ return user.username == req.body.username})
 
-		if(person == req.body.username && value == true){
-			session.id = req.body.username
-			console.log(session.id)
-			res.render('page', {member: person, number :'Enter a numer'})
-		}else{
-			res.render('index')
-		}
-	}).catch(err => console.log(err))
 	
-	})
+		if(currentUser.username == req.body.username){
+
+			bcrypt.compare( req.body.password, currentUser.password )
+			.then(function(response){
+				return response
+				
+			}).then(function(value){
+
+				if(value === true){
+					session.id = req.body.username
+		console.log(session.id)
+		res.render('page', {member: currentUser.username, number :'Enter a numer'})
+				}
+				else{
+					res.render('index')
+				}
+			})
+			
+			.catch(err => console.log(err))
+
+		
+	}
+})
 
 //Page after succesfull login
 router.get('/home', (req, res)=>{
@@ -113,7 +140,7 @@ router.get('/home', (req, res)=>{
 		res.render('page', {number:'Enter any number', member:person})
 		
 	}else{
-		res.redirect('/login')
+		res.render('page', {number:'Enter any number', member:currentUser.username })
 	}
 	
 })
